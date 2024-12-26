@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Live Scores</title>
+    <script>
+        async function fetchScores() {
+            try {
+                const response = await fetch('/api/score');
+                if (response.ok) {
+                    const scores = await response.json();
+                    const scoresList = document.getElementById('scoresList');
+                    scoresList.innerHTML = '';
+                    scores.forEach(score => {
+                        const li = document.createElement('li');
+                        li.textContent = score;
+                        scoresList.appendChild(li);
+                    });
+                } else {
+                    console.error('Failed to fetch scores:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching scores:', error);
+            }
+        }
+
+        // Fetch scores on page load
+        document.addEventListener('DOMContentLoaded', fetchScores);
+    </script>
+</head>
+<body>
+<h1>Live Cricket Scores</h1>
+<ul id="scoresList"></ul>
+<button onclick="fetchScores()">Refresh Scores</button>
+</body>
+</html>
